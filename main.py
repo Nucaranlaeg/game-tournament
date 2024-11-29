@@ -161,7 +161,7 @@ def run_tournament(tournament, contestants, games, trials):
 	correct_wins = 0
 	avg_rank = 0
 	best_skill = max([x["skill"] for x in contestants])
-	for i in tqdm(range(trials)):
+	for _ in tqdm(range(trials)):
 		random.shuffle(contestants)
 		try:
 			winner = tournament([x["name"] for x in contestants], games, make_games(contestants, games))
@@ -174,7 +174,7 @@ def run_tournament(tournament, contestants, games, trials):
 			raise
 		except:
 			pass
-	return correct_wins, avg_rank
+	return correct_wins, avg_rank / trials
 
 def run_all_scenarios(tournament):
 	trials = 100000
@@ -186,8 +186,8 @@ def run_all_scenarios(tournament):
 		correct_wins += scenario['correct_wins']
 		avg_rank += scenario['avg_rank']
 	for scenario in scenarios:
-		print(f"{scenario['name']:20}: {scenario['correct_wins']:.4f}    {scenario['avg_rank']:.4f}")
-	print(f"{'Average':20}: {correct_wins / len(scenarios):.4f}    {avg_rank / len(scenarios):.4f}")
+		print(f"{scenario['name']:20}: {scenario['correct_wins']:.0f}    {scenario['avg_rank']:.5f}")
+	print(f"{'Average':20}: {correct_wins / len(scenarios):.0f}    {avg_rank / len(scenarios):.5f}")
 
 tourney = import_module(sys.argv[1])
 run_all_scenarios(tourney.run_tournament)
